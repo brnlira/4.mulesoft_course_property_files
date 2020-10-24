@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<!--<flow name="properties_files_basics" doc:id="3bd87205-7cc1-42a0-b61e-0c48060454df" >
+		<http:listener doc:name="HTTP GET" doc:id="8b912987-044d-4163-80ee-fc2e71f9e420" config-ref="HTTP_Listener_config" path="${http.path}"/>
+		<logger level="INFO" doc:name="Log START" doc:id="e14fa345-cc88-41b8-a1aa-abe706f97a81" message='#["LOG Start Flow Name: " ++ flow.name ++ " TimeStamp: " ++ now()]'/>
+		<logger level="INFO" doc:name="Log MESSAGE" doc:id="d34b8929-6abe-4034-9122-496d4d9b1a6f" message="${message}"/>
+		<set-payload value="${message}" doc:name="Set Payload" doc:id="8f78a46a-3d5b-4030-9e28-eb66dbb79443" />
+		<logger level="INFO" doc:name="Log END" doc:id="f2a4f2e5-9a8d-446f-847a-6031fca7ecc4" message='#["LOG End Flow Name: " ++ flow.name ++ " TimeStamp: " ++ now()]'/>
+	</flow>-->
+	<flow name="properties_files_dynamics" doc:id="bf284676-e3ce-4ec6-a07d-48745a23c253" >
+		<http:listener doc:name="HTTP GET" doc:id="65c17fcc-33f6-415b-ad32-89c0423f587b" config-ref="HTTP_Listener_config" path="${http.path}"/>
+		<logger level="INFO" doc:name="Log START" doc:id="1f24cd9f-7fba-4152-967b-579cdce731b0" message='#["LOG Start Flow Name: " ++ flow.name ++ " TimeStamp: " ++ now()]'/>
+		<logger level="INFO" doc:name="Log DYNAMIC MESSAGE" doc:id="0ea943b7-8b23-4292-9fb9-9545356c67ca" message='#[%dw 2.0
+
+output application/json
+---
+{
+	"message": Mule::p("myMessage")
+}]'/>
+		<set-payload value='#[%dw 2.0
+
+output application/json
+---
+{
+	"message": Mule::p("myMessage")
+}]' doc:name="Set Payload" doc:id="920f43fe-79f1-43c7-aebe-d9ace6fa0031" />
+		<logger level="INFO" doc:name="Log END" doc:id="9a1d2962-41d9-455f-befb-790d8c9ac04d" message='#["LOG End Flow Name: " ++ flow.name ++ " TimeStamp: " ++ now()]'/>
+	</flow>
+</mule>
